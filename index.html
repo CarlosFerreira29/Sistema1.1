@@ -1,0 +1,304 @@
+<html><head><base href="." />
+<title>Gerador de Código de Barras</title>
+<meta charset="UTF-8">
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+<style>
+:root {
+  --primary: #2c3e50;
+  --secondary: #2b6195;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background: #34495e;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #ffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  color: white;
+}
+
+.logo-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+  background: #ffff;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.company-name {
+  font-size: 48px;
+  color: #1a4b84;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.company-tagline {
+  font-size: 18px;
+  color: black;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: Ffff;
+  margin-bottom: 5px;
+  color:#7e8185;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #9fc1e2;
+  border-radius: 5px;
+  font-size: 18px;
+  transition: border-color 0.3s;
+  background: white;
+  color: black;
+}
+
+input:focus {
+  border-color: var(--secondary);
+  outline: none;
+}
+
+input::placeholder {
+  color: #c6d1db;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+button {
+  background-color: var(--secondary);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  flex: 1;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+.print-button {
+  background-color: #27ae60;
+}
+
+.print-button:hover {
+  background-color: #219a52;
+}
+
+.barcode-container {
+  margin-top: 30px;
+  text-align: center;
+  padding: 10px;
+  border: 2px dashed #485e74;
+  border-radius: 5px;
+  page-break-after: always;
+  background: white;
+  width: 130mm;
+  height: 100mm;
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.barcode-container:last-child {
+  page-break-after: auto;
+}
+
+.barcode-info {
+  margin-bottom: 10px;
+  font-size: 24px;
+  color: #333;
+  line-height: 1.5;
+}
+
+.barcode-info strong {
+  color: var(--primary);
+  font-size: 26px;
+}
+
+.barcode-title {
+  color: #3498db;
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@media print {
+  body {
+    background: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .container {
+    box-shadow: none;
+    padding: 0;
+    background: none;
+    max-width: none;
+  }
+  
+  button, input, .form-group, .logo-title {
+    display: none;
+  }
+  
+  .barcode-container {
+    border: none;
+    margin: 0;
+    padding: 5mm;
+    width: 130mm;
+    height: 100mm;
+    page-break-after: always;
+  }
+}
+
+.product-code {
+  font-size: 16px;
+  margin-top: 5px;
+  color: var(--primary);
+  font-family: monospace;
+}
+
+#barcodeContainers {
+  margin-top: 20px;
+}
+
+svg {
+  max-width: 100%;
+  height: auto;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="logo-title">
+    <div class="company-name">Cartonale</div>
+    <div class="company-tagline">Soluções em Plástico Corrugado</div>
+  </div>
+  
+  <div class="form-group">
+    <label for="clientName">Nome do Cliente:</label>
+    <input type="text" id="clientName" placeholder="Digite o nome do cliente">
+  </div>
+  
+  <div class="form-group">
+    <label for="productName">Nome do Produto:</label>
+    <input type="text" id="productName" placeholder="Digite o nome do produto">
+  </div>
+  
+  <div class="form-group">
+    <label for="paletteNumber">Número Inicial do Palete:</label>
+    <input type="text" id="paletteNumber" placeholder="Digite o número inicial do palete">
+  </div>
+  
+  <div class="form-group">
+    <label for="productCode">Código do Produto:</label>
+    <input type="text" id="productCode" placeholder="Digite o código do produto">
+  </div>
+  
+  <div class="button-group">
+    <button onclick="generateBarcodes()">Gerar Códigos de Barras</button>
+    <button onclick="window.print()" class="print-button">Imprimir</button>
+  </div>
+  
+  <div id="barcodeContainers"></div>
+</div>
+
+<script>
+function generateBarcodes() {
+  const clientName = document.getElementById('clientName').value;
+  const productName = document.getElementById('productName').value;
+  const productCode = document.getElementById('productCode').value;
+  const initialPaletteNumber = document.getElementById('paletteNumber').value;
+  
+  if (!clientName || !productName || !productCode || !initialPaletteNumber) {
+    alert('Por favor, preencha todos os campos!');
+    return;
+  }
+  
+  const barcodeContainers = document.getElementById('barcodeContainers');
+  barcodeContainers.innerHTML = '';
+  
+  for (let i = 0; i < 5; i++) {
+    const currentPaletteNumber = String(Number(initialPaletteNumber) + i);
+    const container = document.createElement('div');
+    container.className = 'barcode-container fade-in';
+    
+    container.innerHTML = `
+      <div class="barcode-title">Cartonale Soluções em Plástico Corrugado</div>
+      <div class="barcode-info">
+        <strong>Cliente:</strong> ${clientName}<br>
+        <strong>Produto:</strong> ${productName}<br>
+        <strong>Palete:</strong> ${currentPaletteNumber}
+      </div>
+      <svg id="barcode${i}"></svg>
+      <div class="product-code">${productCode}-${currentPaletteNumber}</div>
+    `;
+    
+    barcodeContainers.appendChild(container);
+    
+    try {
+      JsBarcode(`#barcode${i}`, `${productCode}-${currentPaletteNumber}`, {
+        format: "CODE128",
+        width: 2.5,
+        height: 80,
+        displayValue: false,
+        fontSize: 14,
+        marginTop: 10,
+        marginBottom: 10
+      });
+    } catch (e) {
+      alert('Erro ao gerar o código de barras. Verifique se o código é válido.');
+      return;
+    }
+  }
+}
+
+document.querySelectorAll('input').forEach(input => {
+  input.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      generateBarcodes();
+    }
+  });
+});
+</script>
+</body>
+</html>
