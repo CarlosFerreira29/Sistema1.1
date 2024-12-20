@@ -1,304 +1,2098 @@
-<html><head><base href="." />
-<title>Gerador de Código de Barras</title>
-<meta charset="UTF-8">
-<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+<html><head><base href="."><meta charset="UTF-8">
+<title>Sistema de Controle de Produ&#xe7;&#xe3;o</title>
+
+<!-- Main stylesheet with all UI components styling -->
 <style>
-:root {
-  --primary: #2c3e50;
-  --secondary: #2b6195;
-}
-
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 20px;
-  background: #34495e;
-  min-height: 100vh;
-}
-
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  background: #ffff;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-  color: white;
-}
-
-.logo-title {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 30px;
-  background: #ffff;
-  padding: 20px;
-  border-radius: 10px;
-}
-
-.company-name {
-  font-size: 48px;
-  color: #1a4b84;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.company-tagline {
-  font-size: 18px;
-  color: black;
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-label {
-  display: Ffff;
-  margin-bottom: 5px;
-  color:#7e8185;
-  font-weight: bold;
-  font-size: 18px;
-}
-
-input {
-  width: 100%;
-  padding: 12px;
-  border: 2px solid #9fc1e2;
-  border-radius: 5px;
-  font-size: 18px;
-  transition: border-color 0.3s;
-  background: white;
-  color: black;
-}
-
-input:focus {
-  border-color: var(--secondary);
-  outline: none;
-}
-
-input::placeholder {
-  color: #c6d1db;
-}
-
-.button-group {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-button {
-  background-color: var(--secondary);
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  flex: 1;
-  transition: background-color 0.3s;
-}
-
-button:hover {
-  background-color: #2980b9;
-}
-
-.print-button {
-  background-color: #27ae60;
-}
-
-.print-button:hover {
-  background-color: #219a52;
-}
-
-.barcode-container {
-  margin-top: 30px;
-  text-align: center;
-  padding: 10px;
-  border: 2px dashed #485e74;
-  border-radius: 5px;
-  page-break-after: always;
-  background: white;
-  width: 130mm;
-  height: 100mm;
-  box-sizing: border-box;
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.barcode-container:last-child {
-  page-break-after: auto;
-}
-
-.barcode-info {
-  margin-bottom: 10px;
-  font-size: 24px;
-  color: #333;
-  line-height: 1.5;
-}
-
-.barcode-info strong {
-  color: var(--primary);
-  font-size: 26px;
-}
-
-.barcode-title {
-  color: #3498db;
-  text-align: center;
-  margin-bottom: 10px;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.fade-in {
-  animation: fadeIn 0.5s ease-in;
-}
-
-@media print {
-  body {
-    background: none;
-    padding: 0;
+  /* Reset default styles and set base font */
+  * {
     margin: 0;
-  }
-  
-  .container {
-    box-shadow: none;
     padding: 0;
-    background: none;
-    max-width: none;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
-  
-  button, input, .form-group, .logo-title {
+
+  body {
+    background-image: url('/images.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    padding: 20px;
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    color: #1a237e;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .nav-menu {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .nav-button {
+    background: #1a237e;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
+  }
+
+  .nav-button:hover {
+    background: #283593;
+  }
+
+  #registroPage, #recordsPage, #terminoPage, #terminoRaiosPage, #retrabalhoPage, #raiosRecordsPage, #paradasPage, #dashboardPage {
     display: none;
   }
-  
-  .barcode-container {
-    border: none;
-    margin: 0;
-    padding: 5mm;
-    width: 130mm;
-    height: 100mm;
-    page-break-after: always;
+
+  .page-active {
+    display: block !important;
   }
-}
 
-.product-code {
-  font-size: 16px;
-  margin-top: 5px;
-  color: var(--primary);
-  font-family: monospace;
-}
+  .data-table {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+    margin-top: 20px;
+  }
 
-#barcodeContainers {
-  margin-top: 20px;
-}
+  .data-table th {
+    background: #1a237e;
+    color: white;
+    padding: 15px;
+    text-align: left;
+  }
 
-svg {
-  max-width: 100%;
-  height: auto;
-}
+  .data-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .data-table tr:hover {
+    background: #f5f5f5;
+  }
+
+  .add-form {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: block; /* Ensure form is visible by default on registration page */
+  }
+
+  .form-group {
+    flex: 1;
+    min-width: 200px;
+    margin-bottom: 0;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  button {
+    background: #1a237e;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  button:hover {
+    background: #283593;
+  }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .delete-btn {
+    background: #f44336;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .delete-btn:hover {
+    background: #d32f2f;
+  }
+
+  .data-table thead {
+    display: table-header-group;
+  }
+
+  .data-table tbody:empty::after {
+    content: "";
+    display: table-row;
+    height: 50px;
+  }
+
+  .data-table tbody:empty {
+    background: #fff;
+  }
+
+  .total-summary {
+    background: rgba(248, 249, 250, 0.95) !important;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .stat-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .stat-card h3 {
+    font-size: 1.1em;
+    margin-bottom: 15px;
+    color: #1a237e;
+  }
+
+  .stat-card p {
+    margin: 8px 0;
+    font-size: 0.9em;
+  }
+
+  .logo-container {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .logo {
+    max-width: 300px; /* Increased from 200px */
+    height: auto;
+  }
+
+  @media (max-width: 768px) {
+    .logo {
+      max-width: 200px; /* Increased from 150px */
+    }
+  }
+
+  @media (max-width: 480px) {
+    .logo {
+      max-width: 150px; /* Increased from 120px */
+    }
+  }
+
+  .system-title {
+    color: white;
+    font-size: 1.5em;
+    margin-top: 10px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    font-weight: 500;
+  }
+
+  .dashboard-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .turno-1 {
+    color: #1a237e;
+    font-weight: bold;
+  }
+
+  .turno-2 {
+    color: #2e7d32;
+    font-weight: bold;
+  }
+
+  .turno-3 {
+    color: #c62828;
+    font-weight: bold;
+  }
+
+  /* Added PDF Menu Styles */
+  .pdf-menu {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+  }
+
+  .pdf-button {
+    background: #1a237e;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+
+  .pdf-button:hover {
+    background: #283593;
+  }
+
+  .pdf-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 60px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 10px 0;
+    min-width: 250px;
+  }
+
+  .pdf-dropdown.show {
+    display: block;
+  }
+
+  .pdf-dropdown button {
+    display: block;
+    width: 100%;
+    padding: 10px 20px;
+    text-align: left;
+    background: none;
+    border: none;
+    color: #333;
+    cursor: pointer;
+  }
+
+  .pdf-dropdown button:hover {
+    background: #f5f5f5;
+    color: #1a237e;
+  }
+
+  /* PDF icon SVG styling */
+  .pdf-icon {
+    width: 24px;
+    height: 24px;
+    fill: white;
+  }
+  
+  /* Make sure canvas elements render at correct size */
+  canvas {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Add backup menu styles after pdf menu styles */
+  .backup-menu {
+    position: fixed;
+    top: 20px;
+    right: 80px; /* Position to the left of PDF button */
+    z-index: 1000;
+  }
+
+  .backup-button {
+    background: #1a237e;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .backup-button:hover {
+    background: #283593;
+  }
+
+  .backup-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 60px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 10px 0;
+    min-width: 200px;
+  }
+
+  .backup-dropdown.show {
+    display: block;
+  }
+
+  .backup-dropdown button {
+    display: block;
+    width: 100%;
+    padding: 10px 20px;
+    text-align: left;
+    background: none;
+    border: none;
+    color: #333;
+    cursor: pointer;
+  }
+
+  .backup-dropdown button:hover {
+    background: #f5f5f5;
+    color: #1a237e;
+  }
+
+  .backup-icon {
+    width: 24px;
+    height: 24px;
+    fill: white;
+  }
 </style>
+
+<!-- Required external libraries -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body>
-<div class="container">
-  <div class="logo-title">
-    <div class="company-name">Cartonale</div>
-    <div class="company-tagline">Soluções em Plástico Corrugado</div>
+  <!-- Main header with logo -->
+  <div class="logo-container">
+    <img src="/1000176594-removebg-preview (2).png" alt="CartOracle Logo" class="logo">
+    <div class="system-title">Sistema de Gest&#xe3;o de Produ&#xe7;&#xe3;o do Setor CPL</div>
   </div>
   
-  <div class="form-group">
-    <label for="clientName">Nome do Cliente:</label>
-    <input type="text" id="clientName" placeholder="Digite o nome do cliente">
+  <!-- PDF Menu -->
+  <div class="pdf-menu">
+    <button class="pdf-button" onclick="togglePdfMenu()">
+      <svg class="pdf-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+        <path d="M369.9 97.9L286 14C277 5 264.8-.1 252.1-.1H48C21.5 0 0 21.5 0 48v416c0 26.5 21.5 48 48 48h288c26.5 0 48-21.5 48-48V131.9c0-12.7-5.1-25-14.1-34zM332.1 128H256V51.9l76.1 76.1zM48 464V48h160v104c0 13.3 10.7 24 24 24h104v288H48zm250.2-143.7c-12.2-12-47-8.7-64.4-6.5-17.2-10.5-28.7-25-36.8-46.3 3.9-16.1 10.1-40.6 5.4-56-4.2-26.2-37.8-23.6-42.6-5.9-4.4 16.1-.4 38.5 7 67.1-10 23.9-24.9 56-35.4 74.4-20 10.3-47 26.2-51 46.2-3.3 15.8 26 55.2 76.1-31.2 22.4-7.4 46.8-16.5 68.4-20.1 18.9 10.2 41 17 55.8 17 25.5 0 28-28.2 17.5-38.7zm-198.1 77.8c5.1-13.7 24.5-29.5 30.4-35-19 30.3-30.4 35.7-30.4 35zm81.6-190.6c7.4 0 6.7 32.1 1.8 40.8-4.4-13.9-4.3-40.8-1.8-40.8zm-24.4 136.6c9.7-16.9 18-37 24.7-54.7 8.3 15.1 18.9 27.2 30.1 35.5-20.8 4.3-38.9 13.1-54.8 19.2zm131.6-5s-5 6-37.3-7.8c35.1-2.6 40.9 5.4 37.3 7.8z"/>
+      </svg>
+    </button>
+    <div class="pdf-dropdown" id="pdfMenu">
+      <button onclick="generateProductionPDF()">Relat&#xf3;rio de Produ&#xe7;&#xe3;o</button>
+      <button onclick="generateRaysProductionPDF()">Relat&#xf3;rio de Produ&#xe7;&#xe3;o de Raios</button>
+      <button onclick="generateReworkPDF()">Relat&#xf3;rio de Retrabalho</button>
+      <button onclick="generateStopsPDF()">Relat&#xf3;rio de Paradas</button>  
+      <button onclick="generateDashboardChartsPDF()">Relat&#xf3;rio - OEE</button>
+      <button onclick="generateOEERaiosPDF()">Relat&#xf3;rio OEE - Raios</button>
+    </div>
   </div>
-  
-  <div class="form-group">
-    <label for="productName">Nome do Produto:</label>
-    <input type="text" id="productName" placeholder="Digite o nome do produto">
-  </div>
-  
-  <div class="form-group">
-    <label for="paletteNumber">Número Inicial do Palete:</label>
-    <input type="text" id="paletteNumber" placeholder="Digite o número inicial do palete">
-  </div>
-  
-  <div class="form-group">
-    <label for="productCode">Código do Produto:</label>
-    <input type="text" id="productCode" placeholder="Digite o código do produto">
-  </div>
-  
-  <div class="button-group">
-    <button onclick="generateBarcodes()">Gerar Códigos de Barras</button>
-    <button onclick="window.print()" class="print-button">Imprimir</button>
-  </div>
-  
-  <div id="barcodeContainers"></div>
-</div>
 
-<script>
-function generateBarcodes() {
-  const clientName = document.getElementById('clientName').value;
-  const productName = document.getElementById('productName').value;
-  const productCode = document.getElementById('productCode').value;
-  const initialPaletteNumber = document.getElementById('paletteNumber').value;
-  
-  if (!clientName || !productName || !productCode || !initialPaletteNumber) {
-    alert('Por favor, preencha todos os campos!');
-    return;
-  }
-  
-  const barcodeContainers = document.getElementById('barcodeContainers');
-  barcodeContainers.innerHTML = '';
-  
-  for (let i = 0; i < 5; i++) {
-    const currentPaletteNumber = String(Number(initialPaletteNumber) + i);
-    const container = document.createElement('div');
-    container.className = 'barcode-container fade-in';
-    
-    container.innerHTML = `
-      <div class="barcode-title">Cartonale Soluções em Plástico Corrugado</div>
-      <div class="barcode-info">
-        <strong>Cliente:</strong> ${clientName}<br>
-        <strong>Produto:</strong> ${productName}<br>
-        <strong>Palete:</strong> ${currentPaletteNumber}
+  <!-- Add backup menu HTML after PDF menu -->
+  <div class="backup-menu">
+    <button class="backup-button" onclick="toggleBackupMenu()">
+      <svg class="backup-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+        <path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-167l80-80c9.4-9.4 24.6-9.4 33.9 0l80 80c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-39-39V456c0 13.3-10.7 24-24 24s-24-10.7-24-24V327.9l-39 39c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9z"/>
+      </svg>
+    </button>
+    <div class="backup-dropdown" id="backupMenu">
+      <button onclick="productionSystem.downloadBackup()">Fazer Backup dos Dados</button>
+      <button onclick="productionSystem.restoreBackup()">Restaurar Backup</button>
+      <button onclick="productionSystem.deleteAllData()">Excluir Todos os Dados</button>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- Main navigation menu -->
+    <div class="nav-menu">
+      <button class="nav-button" onclick="showPage(&apos;registroPage&apos;)">Iniciar Produ&#xe7;&#xe3;o</button>
+      <button class="nav-button" onclick="showPage(&apos;terminoPage&apos;)"> T&#xe9;rmino Produ&#xe7;&#xe3;o</button>
+      <button class="nav-button" onclick="showPage(&apos;terminoRaiosPage&apos;)">T&#xe9;rmino Raios</button>
+      <button class="nav-button" onclick="showPage(&apos;recordsPage&apos;)">Registros Produ&#xe7;&#xe3;o Lateral</button>
+      <button class="nav-button" onclick="showPage(&apos;raiosRecordsPage&apos;)">Registros Raios</button>
+      <button class="nav-button" onclick="showPage(&apos;retrabalhoPage&apos;)">An&#xe1;lise de Retrabalho</button>
+      <button class="nav-button" onclick="showPage(&apos;paradasPage&apos;)">Paradas de M&#xe1;quina</button>
+      <button class="nav-button" onclick="showPage(&apos;dashboardPage&apos;)">Dashboard</button>
+    </div>
+
+    <!-- Production start form page -->
+    <div id="registroPage" class="page-active">
+      <div class="add-form">
+        <form id="productionForm">
+          <div class="form-group">
+            <label for="codigoProducaoInicio">C&#xf3;digo de Produ&#xe7;&#xe3;o</label>
+            <input type="text" id="codigoProducaoInicio" pattern="\d{7}" maxlength="7" readonly required>
+          </div>
+          <div class="form-group">
+            <label for="turnoProducao">Turno</label>
+            <select id="turnoProducao" required>
+              <option value="1">1&#xba; Turno (05:40-14:00)</option>
+              <option value="2">2&#xba; Turno (13:40-22:00)</option>
+              <option value="3">3&#xba; Turno (22:00-05:40)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="colaborador">Colaborador</label>
+            <input type="text" id="colaborador" required>
+          </div>
+          <div class="form-group">
+            <label for="cliente">Cliente</label>
+            <input type="text" id="cliente" required>
+          </div>
+          <div class="form-group">
+            <label for="of">OF</label>
+            <input type="text" id="of" required>
+          </div>
+          <div class="form-group">
+            <label for="produto">Produto</label>
+            <input type="text" id="produto" required>
+          </div>
+          <div class="form-group">
+            <label for="especificacaoInicio">Especifica&#xe7;&#xf5;es</label>
+            <select id="especificacaoInicio" required>
+              <option value>Selecione uma especifica&#xe7;&#xf5;es</option>
+              <option value="Raios">Raios</option>
+              <option value="Contra a Onda">Contra Onda</option>
+              <option value="Sentido da Onda">Sentido da Onda</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="horaInicio">Hora de In&#xed;cio</label>
+            <input type="datetime-local" id="horaInicio" required>
+          </div>
+          <button type="submit">Iniciar Produ&#xe7;&#xe3;o</button>
+        </form>
       </div>
-      <svg id="barcode${i}"></svg>
-      <div class="product-code">${productCode}-${currentPaletteNumber}</div>
-    `;
-    
-    barcodeContainers.appendChild(container);
-    
-    try {
-      JsBarcode(`#barcode${i}`, `${productCode}-${currentPaletteNumber}`, {
-        format: "CODE128",
-        width: 2.5,
-        height: 80,
-        displayValue: false,
-        fontSize: 14,
-        marginTop: 10,
-        marginBottom: 10
-      });
-    } catch (e) {
-      alert('Erro ao gerar o código de barras. Verifique se o código é válido.');
+    </div>
+
+    <!-- Production end form page -->
+    <div id="terminoPage" style="display: none;">
+      <div class="add-form">
+        <h3 style="color: #1a237e; margin-bottom: 20px;">Registrar T&#xe9;rmino de Produ&#xe7;&#xe3;o</h3>
+        <form id="terminoForm">
+          <div class="form-group">
+            <label for="codigoProducao">C&#xf3;digo da Produ&#xe7;&#xe3;o</label>
+            <input type="text" id="codigoProducao" pattern="\d{7}" maxlength="7" inputmode="numeric" oninput="this.value = this.value.replace(/[^\d]/g, &apos;&apos;).substring(0, 7)" required>
+          </div>
+          <div class="form-group">
+            <label for="horaTermino">Hora de T&#xe9;rmino</label>
+            <input type="datetime-local" id="horaTermino" required>
+          </div>
+          <div class="form-group">
+            <label for="quantidade">Quantidade</label>
+            <input type="number" id="quantidade" required>
+          </div>
+          <div class="form-group">
+            <label for="percaSetup">Perda de Setup</label>
+            <input type="number" id="percaSetup" required>
+          </div>
+          <div class="form-group">
+            <label for="pecasDanificadas">Pe&#xe7;as Danificadas</label>
+            <input type="number" id="pecasDanificadas" required>
+          </div>
+          <div class="form-group">
+            <label for="retrabalho">Retrabalho</label>
+            <input type="number" id="retrabalho" required>
+          </div>
+          <button type="submit">Registrar T&#xe9;rmino</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Rays production end form page -->
+    <div id="terminoRaiosPage" style="display: none;">
+      <div class="add-form">
+        <h3 style="color: #1a237e; margin-bottom: 20px;">Registrar T&#xe9;rmino de Produ&#xe7;&#xe3;o - Raios</h3>
+        <form id="terminoRaiosForm">
+          <div class="form-group">
+            <label for="codigoProducaoRaios">C&#xf3;digo da Produ&#xe7;&#xe3;o</label>
+            <input type="text" id="codigoProducaoRaios" pattern="\d{7}" maxlength="7" inputmode="numeric" oninput="this.value = this.value.replace(/[^\d]/g, &apos;&apos;).substring(0, 7)" required>
+          </div>
+          <div class="form-group">
+            <label for="horaTerminoRaios">Hora de T&#xe9;rmino</label>
+            <input type="datetime-local" id="horaTerminoRaios" required>
+          </div>
+          <div class="form-group">
+            <label for="quantidade1LadoRaios">Quantidade 1 Lado</label>
+            <input type="number" id="quantidade1LadoRaios" required>
+          </div>
+          <div class="form-group">
+            <label for="quantidade2LadosRaios">Quantidade 2 Lados</label>
+            <input type="number" id="quantidade2LadosRaios" required>
+          </div>
+          <div class="form-group">
+            <label for="percaSetupRaios">Perda de Setup</label>
+            <input type="number" id="percaSetupRaios" required>
+          </div>
+          <div class="form-group">
+            <label for="pecasDanificadasRaios">Pe&#xe7;as Danificadas</label>
+            <input type="number" id="pecasDanificadasRaios" required>
+          </div>
+          <div class="form-group">
+            <label for="retrabalhoRaios">Retrabalho</label>
+            <input type="number" id="retrabalhoRaios" required>
+          </div>
+          <button type="submit">Registrar T&#xe9;rmino</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Production records display page -->
+    <div id="recordsPage">
+      <h2 style="color: #1a237e; margin-bottom: 20px;">Registros de Produ&#xe7;&#xe3;o</h2>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>C&#xf3;digo</th>
+            <th>Turno</th>
+            <th>Colaborador</th>
+            <th>Cliente</th>
+            <th>OF</th>
+            <th>Produto</th>
+            <th>Especifica&#xe7;&#xf5;es</th>
+            <th>Hora de In&#xed;cio</th>
+            <th>Hora de T&#xe9;rmino</th>
+            <th>Quantidade</th>
+            <th>Perda de Setup</th>
+            <th>Pe&#xe7;as Danificadas</th>
+            <th>Retrabalho</th>
+            <th>A&#xe7;&#xf5;es</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Rays production records page -->
+    <div id="raiosRecordsPage" style="display: none;">
+      <h2 style="color: #1a237e; margin-bottom: 20px;">Registros de Produ&#xe7;&#xe3;o - Raios</h2>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>C&#xf3;digo</th>
+            <th>Turno</th>
+            <th>Colaborador</th>
+            <th>Cliente</th>
+            <th>OF</th>
+            <th>Produto</th>
+            <th>Especifica&#xe7;&#xf5;es</th>
+            <th>Hora de In&#xed;cio</th>
+            <th>Hora de T&#xe9;rmino</th>
+            <th>Quantidade 1 Lado</th>
+            <th>Quantidade 2 Lados</th>
+            <th>Total</th>
+            <th>Perda de Setup</th>
+            <th>Pe&#xe7;as Danificadas</th>
+            <th>Retrabalho</th>
+            <th>A&#xe7;&#xf5;es</th>
+          </tr>
+        </thead>
+        <tbody id="raiosTableBody">
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Rework analysis page -->
+    <div id="retrabalhoPage" style="display: none;">
+      <div class="analysis-container">
+        <h2 style="color: #1a237e; margin-bottom: 20px;">An&#xe1;lise de Retrabalho</h2>
+        
+        <div class="add-form">
+          <form id="retrabalhoForm">
+            <div class="form-group">
+              <label for="colaboradorRetrabalho">Colaborador</label>
+              <input type="text" id="colaboradorRetrabalho" required>
+            </div>
+            <div class="form-group">
+              <label for="horaInicioRetrabalho">Data e Hora de In&#xed;cio</label>
+              <input type="datetime-local" id="horaInicioRetrabalho" required>
+            </div>
+            <div class="form-group">
+              <label for="horaTerminoRetrabalho">Data e Hora de T&#xe9;rmino</label>
+              <input type="datetime-local" id="horaTerminoRetrabalho" required>
+            </div>
+            <div class="form-group">
+              <label for="quantidadeRetrabalho">Quantidade</label>
+              <input type="number" id="quantidadeRetrabalho" required>
+            </div>
+            <button type="submit">Registrar Retrabalho</button>
+          </form>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Colaborador</th>
+              <th>Data/Hora In&#xed;cio</th>
+              <th>Data/Hora T&#xe9;rmino</th>
+              <th>Quantidade</th>
+              <th>A&#xe7;&#xf5;es</th>
+            </tr>
+          </thead>
+          <tbody id="retrabalhoTableBody">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Machine stops tracking page -->
+    <div id="paradasPage" style="display: none;">
+      <h2 style="color: #1a237e; margin-bottom: 20px;">Registro de Paradas de M&#xe1;quina</h2>
+      
+      <div class="add-form">
+        <form id="paradaForm">
+          <div class="form-group">
+            <label for="maquinaParada">M&#xe1;quina</label>
+            <select id="maquinaParada" required>
+              <option value>Selecione a m&#xe1;quina</option>
+              <option value="CPL1">CPL 1 - Selagem Lateral</option>
+              <option value="CPL2">CPL 2 - Selagem Raios</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="tipoParada">Tipo de Parada</label>
+            <select id="tipoParada" required>
+              <option value>Selecione o tipo de parada</option>
+              <option value="manutencao">Manuten&#xe7;&#xe3;o</option>
+              <option value="setup">Setup</option>
+              <option value="quebra">Quebra</option>
+              <option value="ajuste">Ajuste de M&#xe1;quina</option>
+              <option value="outro">Outro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="descricaoParada">Descri&#xe7;&#xe3;o</label>
+            <input type="text" id="descricaoParada" required>
+          </div>
+          <div class="form-group">
+            <label for="horaInicioParada">Hora de In&#xed;cio</label>
+            <input type="datetime-local" id="horaInicioParada" required>
+          </div>
+          <button type="submit">Registrar Parada</button>
+        </form>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>M&#xe1;quina</th>
+            <th>Tipo</th>
+            <th>Descri&#xe7;&#xe3;o</th>
+            <th>In&#xed;cio</th>
+            <th>Status</th>
+            <th>Resolu&#xe7;&#xe3;o</th>
+            <th>Dura&#xe7;&#xe3;o</th>
+            <th>A&#xe7;&#xf5;es</th>
+          </tr>
+        </thead>
+        <tbody id="paradasTableBody">
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Dashboard page -->
+    <div id="dashboardPage" style="display: none;">
+      <h2 style="color: #1a237e; margin-bottom: 20px;">Dashboard Operacional</h2>
+      
+      <div class="dashboard-container">
+        <!-- Production Overview Card -->
+        <div class="stat-card">
+          <h3>Vis&#xe3;o Geral da Produ&#xe7;&#xe3;o</h3>
+          <canvas id="productionChart"></canvas>
+          <div id="productionStats"></div>
+        </div>
+
+        <!-- Machine Stops Card -->
+        <div class="stat-card">
+          <h3>Paradas de M&#xe1;quina</h3>
+          <canvas id="stopsChart"></canvas>
+          <div id="stopsStats"></div>
+        </div>
+
+        <!-- Rework Analysis Card -->
+        <div class="stat-card">
+          <h3>An&#xe1;lise de Retrabalho</h3>
+          <canvas id="reworkChart"></canvas>
+          <div id="reworkStats"></div>
+        </div>
+
+        <!-- Rays Production Overview Card -->
+        <div class="stat-card">
+          <h3>Vis&#xe3;o Geral da Produ&#xe7;&#xe3;o de Raios</h3>
+          <canvas id="raysProductionChart"></canvas>
+          <div id="raysProductionStats"></div>
+        </div>
+
+        <!-- Efficiency Metrics Card -->
+        <div class="stat-card">
+          <h3>M&#xe9;tricas de Efici&#xea;ncia</h3>
+          <canvas id="efficiencyChart"></canvas>
+          <div id="efficiencyStats"></div>
+        </div>
+
+        <!-- Losses Overview Card -->
+        <div class="stat-card">
+          <h3>Vis&#xe3;o Geral de Perdas</h3>
+          <canvas id="lossesChart"></canvas>
+          <div id="lossesStats"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>function showPage(pageId) {
+  const pages = ['registroPage', 'recordsPage', 'terminoPage', 'terminoRaiosPage', 'retrabalhoPage', 'raiosRecordsPage', 'paradasPage', 'dashboardPage'];
+  pages.forEach(page => {
+    const element = document.getElementById(page);
+    if (element) {
+      element.style.display = 'none';
+    }
+  });
+  const selectedPage = document.getElementById(pageId);
+  if (selectedPage) {
+    selectedPage.style.display = 'block';
+  }
+  const productionForm = document.querySelector('.add-form');
+  if (productionForm) {
+    if (pageId === 'registroPage') {
+      productionForm.style.display = 'block';
+    } else {
+      productionForm.style.display = 'none';
+    }
+  }
+  if (pageId === 'dashboardPage') {
+    productionSystem.initializeDashboard();
+  }
+}
+class ProductionSystem {
+  constructor() {
+    this.records = JSON.parse(localStorage.getItem('productionRecords')) || [];
+    this.paradas = JSON.parse(localStorage.getItem('machineStops')) || [];
+    this.retrabalhos = JSON.parse(localStorage.getItem('retrabalhoRecords')) || [];
+    this.form = document.getElementById('productionForm');
+    this.terminoForm = document.getElementById('terminoForm');
+    this.terminoRaiosForm = document.getElementById('terminoRaiosForm');
+    this.retrabalhoForm = document.getElementById('retrabalhoForm');
+    this.tableBody = document.getElementById('tableBody');
+    this.paradaForm = document.getElementById('paradaForm');
+    this.codigoProducaoInicio = document.getElementById('codigoProducaoInicio');
+    this.charts = {
+      production: null,
+      stops: null,
+      rework: null,
+      efficiency: null,
+      raysProduction: null,
+      losses: null
+    };
+    this.updateNextCodeDisplay();
+    if (this.retrabalhoForm) {
+      this.retrabalhoForm.addEventListener('submit', e => this.handleRetrabalhoSubmit(e));
+    }
+    this.form.addEventListener('submit', e => this.handleSubmit(e));
+    this.terminoForm.addEventListener('submit', e => this.handleTerminoSubmit(e));
+    this.terminoRaiosForm.addEventListener('submit', e => this.handleTerminoRaiosSubmit(e));
+    if (this.paradaForm) {
+      this.paradaForm.addEventListener('submit', e => this.handleParadaSubmit(e));
+    }
+    this.loadRecords();
+    this.loadParadas();
+    this.loadRetrabalhos();
+  }
+  handleTerminoSubmit(e) {
+    e.preventDefault();
+    const codigo = document.getElementById('codigoProducao').value;
+    const record = this.records.find(r => r.id === codigo);
+    if (!record) {
+      alert('Código de produção não encontrado!');
       return;
+    }
+    if (record.horaTermino) {
+      alert('Esta produção já foi finalizada!');
+      return;
+    }
+    record.horaTermino = document.getElementById('horaTermino').value;
+    record.quantidade = parseInt(document.getElementById('quantidade').value);
+    record.percaSetup = parseInt(document.getElementById('percaSetup').value);
+    record.pecasDanificadas = parseInt(document.getElementById('pecasDanificadas').value);
+    record.retrabalho = parseInt(document.getElementById('retrabalho').value);
+    this.saveRecords();
+    this.loadRecords();
+    e.target.reset();
+    alert('Produção finalizada com sucesso!');
+  }
+  handleTerminoRaiosSubmit(e) {
+    e.preventDefault();
+    const codigo = document.getElementById('codigoProducaoRaios').value;
+    const record = this.records.find(r => r.id === codigo);
+    if (!record) {
+      alert('Código de produção não encontrado!');
+      return;
+    }
+    if (record.horaTermino) {
+      alert('Esta produção já foi finalizada!');
+      return;
+    }
+    if (!record.especificacao || !record.especificacao.includes('Raios')) {
+      alert('Este código não corresponde a uma produção de Raios!');
+      return;
+    }
+    record.horaTermino = document.getElementById('horaTerminoRaios').value;
+    record.quantidade1Lado = parseInt(document.getElementById('quantidade1LadoRaios').value);
+    record.quantidade2Lados = parseInt(document.getElementById('quantidade2LadosRaios').value);
+    record.percaSetup = parseInt(document.getElementById('percaSetupRaios').value);
+    record.pecasDanificadas = parseInt(document.getElementById('pecasDanificadasRaios').value);
+    record.retrabalho = parseInt(document.getElementById('retrabalhoRaios').value);
+    this.saveRecords();
+    this.loadRecords();
+    e.target.reset();
+    alert('Produção de Raios finalizada com sucesso!');
+  }
+  renderReworkChart() {
+    const ctx = document.getElementById('reworkChart');
+    if (this.charts.rework) {
+      this.charts.rework.destroy();
+    }
+    const reworkData = this.calculateReworkStats();
+    this.charts.rework = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['1º Turno', '2º Turno', '3º Turno'],
+        datasets: [{
+          label: 'Quantidade de Retrabalhos',
+          data: [reworkData['1'].quantity, reworkData['2'].quantity, reworkData['3'].quantity],
+          backgroundColor: ['#1a237e', '#2e7d32', '#c62828']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Retrabalhos por Turno'
+          },
+          datalabels: {
+            anchor: 'end',
+            align: 'top',
+            formatter: function (value) {
+              return value || '0';
+            },
+            color: function (context) {
+              return ['#1a237e', '#2e7d32', '#c62828'][context.dataIndex];
+            },
+            font: {
+              weight: 'bold'
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Quantidade'
+            }
+          }
+        }
+      }
+    });
+  }
+  destroyAllCharts() {
+    Object.values(this.charts).forEach(chart => {
+      if (chart) {
+        chart.destroy();
+      }
+    });
+    this.charts = {
+      production: null,
+      stops: null,
+      rework: null,
+      efficiency: null,
+      raysProduction: null,
+      losses: null
+    };
+  }
+  renderProductionChart() {
+    const ctx = document.getElementById('productionChart');
+    if (this.charts.production) {
+      this.charts.production.destroy();
+    }
+    const productionData = this.calculateProductionStats();
+    this.charts.production = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['1º Turno', '2º Turno', '3º Turno'],
+        datasets: [{
+          label: 'Produção',
+          data: [productionData['1'].production, productionData['2'].production, productionData['3'].production],
+          backgroundColor: ['#1a237e', '#2e7d32', '#c62828']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Produção por Turno'
+          }
+        }
+      }
+    });
+    const lossesCtx = document.getElementById('lossesChart');
+    if (this.charts.losses) {
+      this.charts.losses.destroy();
+    }
+    this.charts.losses = new Chart(lossesCtx, {
+      type: 'bar',
+      data: {
+        labels: ['1º Turno', '2º Turno', '3º Turno'],
+        datasets: [{
+          label: 'Peças Danificadas',
+          data: [productionData['1'].damaged, productionData['2'].damaged, productionData['3'].damaged],
+          backgroundColor: '#f44336'
+        }, {
+          label: 'Perdas de Setup',
+          data: [productionData['1'].setup, productionData['2'].setup, productionData['3'].setup],
+          backgroundColor: '#ff9800'
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Perdas por Turno'
+          },
+          legend: {
+            position: 'top'
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Quantidade'
+            }
+          }
+        }
+      }
+    });
+  }
+  renderStopsChart() {
+    const ctx = document.getElementById('stopsChart');
+    if (this.charts.stops) {
+      this.charts.stops.destroy();
+    }
+    const stopsData = this.calculateStopsStats();
+    this.charts.stops = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Manutenção', 'Setup', 'Quebra', 'Ajuste', 'Outro'],
+        datasets: [{
+          data: [stopsData.manutencao, stopsData.setup, stopsData.quebra, stopsData.ajuste, stopsData.outro],
+          backgroundColor: ['#1a237e', '#2e7d32', '#c62828', '#f57c00', '#7b1fa2']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Distribuição de Paradas'
+          }
+        }
+      }
+    });
+  }
+  renderEfficiencyChart() {
+    const ctx = document.getElementById('efficiencyChart');
+    if (this.charts.efficiency) {
+      this.charts.efficiency.destroy();
+    }
+    const efficiencyData = this.calculateEfficiencyStats();
+    this.charts.efficiency = new Chart(ctx, {
+      type: 'radar',
+      data: {
+        labels: ['Produtividade', 'Qualidade', 'Disponibilidade'],
+        datasets: [{
+          label: 'Métricas de Eficiência',
+          data: [efficiencyData.productivity, efficiencyData.quality, efficiencyData.availability],
+          backgroundColor: 'rgba(26, 35, 126, 0.2)',
+          borderColor: '#1a237e',
+          pointBackgroundColor: '#1a237e'
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Métricas de Eficiência'
+          }
+        },
+        scales: {
+          r: {
+            beginAtZero: true,
+            max: 100
+          }
+        }
+      }
+    });
+  }
+  calculateRaysProductionStats() {
+    const stats = {
+      '1': {
+        production: 0
+      },
+      '2': {
+        production: 0
+      },
+      '3': {
+        production: 0
+      }
+    };
+    this.records.forEach(record => {
+      if (record.especificacao && record.especificacao.includes('Raios')) {
+        const total = (parseInt(record.quantidade1Lado) || 0) + (parseInt(record.quantidade2Lados) || 0);
+        stats[record.turno].production += total;
+      }
+    });
+    return stats;
+  }
+  renderRaysProductionChart() {
+    const ctx = document.getElementById('raysProductionChart');
+    if (this.charts.raysProduction) {
+      this.charts.raysProduction.destroy();
+    }
+    const productionData = this.calculateRaysProductionStats();
+    this.charts.raysProduction = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['1º Turno', '2º Turno', '3º Turno'],
+        datasets: [{
+          label: 'Produção de Raios',
+          data: [productionData['1'].production, productionData['2'].production, productionData['3'].production],
+          backgroundColor: ['#1a237e', '#2e7d32', '#c62828']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Produção de Raios por Turno'
+          },
+          datalabels: {
+            anchor: 'end',
+            align: 'top',
+            formatter: function (value) {
+              return value || '0';
+            },
+            color: function (context) {
+              return ['#1a237e', '#2e7d32', '#c62828'][context.dataIndex];
+            },
+            font: {
+              weight: 'bold'
+            }
+          }
+        }
+      }
+    });
+  }
+  initializeDashboard() {
+    this.destroyAllCharts();
+    this.renderProductionChart();
+    this.renderStopsChart();
+    this.renderReworkChart();
+    this.renderEfficiencyChart();
+    this.renderRaysProductionChart();
+  }
+  calculateProductionStats() {
+    const stats = {
+      '1': {
+        production: 0,
+        setup: 0,
+        damaged: 0,
+        rework: 0
+      },
+      '2': {
+        production: 0,
+        setup: 0,
+        damaged: 0,
+        rework: 0
+      },
+      '3': {
+        production: 0,
+        setup: 0,
+        damaged: 0,
+        rework: 0
+      }
+    };
+    this.records.forEach(record => {
+      if (record.quantidade) {
+        stats[record.turno].production += parseInt(record.quantidade) || 0;
+        stats[record.turno].setup += parseInt(record.percaSetup) || 0;
+        stats[record.turno].damaged += parseInt(record.pecasDanificadas) || 0;
+        stats[record.turno].rework += parseInt(record.retrabalho) || 0;
+      }
+    });
+    return stats;
+  }
+  calculateStopsStats() {
+    const stats = {
+      manutencao: 0,
+      setup: 0,
+      quebra: 0,
+      ajuste: 0,
+      outro: 0
+    };
+    this.paradas.forEach(parada => {
+      stats[parada.tipo] = (stats[parada.tipo] || 0) + 1;
+    });
+    return stats;
+  }
+  calculateReworkStats() {
+    const stats = {
+      '1': {
+        quantity: 0,
+        count: 0
+      },
+      '2': {
+        quantity: 0,
+        count: 0
+      },
+      '3': {
+        quantity: 0,
+        count: 0
+      }
+    };
+    this.retrabalhos.forEach(retrabalho => {
+      const hora = new Date(retrabalho.horaInicio).getHours();
+      let turno;
+      if (hora >= 5 && hora < 14) turno = '1';else if (hora >= 14 && hora < 22) turno = '2';else turno = '3';
+      stats[turno].quantity += parseInt(retrabalho.quantidade) || 0;
+      stats[turno].count++;
+    });
+    return stats;
+  }
+  calculateEfficiencyStats() {
+    const productionStats = this.calculateProductionStats();
+    const totalProduction = Object.values(productionStats).reduce((sum, stat) => sum + stat.production, 0);
+    const totalDefects = Object.values(productionStats).reduce((sum, stat) => sum + stat.damaged + stat.rework, 0);
+    const productivity = totalProduction > 0 ? 100 : 0;
+    const quality = totalProduction > 0 ? (totalProduction - totalDefects) / totalProduction * 100 : 0;
+    const availability = this.paradas.length > 0 ? (24 - this.paradas.length) / 24 * 100 : 100;
+    return {
+      productivity: Math.min(100, productivity),
+      quality: Math.min(100, quality),
+      availability: Math.min(100, availability)
+    };
+  }
+  loadParadas() {
+    const tbody = document.getElementById('paradasTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    this.paradas.forEach(parada => {
+      const row = document.createElement('tr');
+      const duracao = parada.horaTermino ? this.calculateDuration(new Date(parada.horaInicioParada), new Date(parada.horaTermino)) : this.calculateDuration(new Date(parada.horaInicioParada), new Date());
+      row.innerHTML = `
+            <td>${parada.maquina}</td>
+            <td>${parada.tipo}</td>
+            <td>${parada.descricao}</td>
+            <td>${new Date(parada.horaInicioParada).toLocaleString()}</td>
+            <td>${parada.horaTermino ? 'Finalizada' : 'Em andamento'}</td>
+            <td>${parada.resolucao || '-'}</td>
+            <td>${duracao}</td>
+            <td>
+              ${!parada.horaTermino ? `<button onclick="productionSystem.finalizarParada('${parada.id}')">Finalizar</button>` : ''}
+              <button class="delete-btn" onclick="productionSystem.deleteParada('${parada.id}')">
+                Excluir
+              </button>
+            </td>
+          `;
+      tbody.appendChild(row);
+    });
+  }
+  calculateDuration(start, end) {
+    const diff = Math.abs(end - start);
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor(diff % (1000 * 60 * 60) / (1000 * 60));
+    return `${hours}h ${minutes}m`;
+  }
+  handleParadaSubmit(e) {
+    e.preventDefault();
+    const parada = {
+      id: Date.now().toString(),
+      maquina: document.getElementById('maquinaParada').value,
+      tipo: document.getElementById('tipoParada').value,
+      descricao: document.getElementById('descricaoParada').value,
+      horaInicioParada: document.getElementById('horaInicioParada').value,
+      horaTermino: null,
+      resolucao: null
+    };
+    this.paradas.push(parada);
+    this.saveParadas();
+    this.loadParadas();
+    e.target.reset();
+    alert('Parada registrada com sucesso!');
+  }
+  saveParadas() {
+    localStorage.setItem('machineStops', JSON.stringify(this.paradas));
+    this.loadParadas();
+  }
+  deleteParada(id) {
+    const password = prompt("Digite a senha para excluir:");
+    if (password === "CartonaleCPL") {
+      const index = this.paradas.findIndex(p => p.id === id);
+      if (index !== -1) {
+        this.paradas.splice(index, 1);
+        this.saveParadas();
+        this.loadParadas();
+      }
+    } else {
+      alert("Senha incorreta!");
+    }
+  }
+  finalizarParada(id) {
+    const parada = this.paradas.find(p => p.id === id);
+    if (parada) {
+      const currentDateTime = new Date().toLocaleString();
+      const resolucao = prompt(`Data/Hora atual: ${currentDateTime}\nDigite a resolução da parada:`);
+      if (resolucao !== null) {
+        parada.horaTermino = new Date().toISOString();
+        parada.resolucao = `${currentDateTime} - ${resolucao}`;
+        this.saveParadas();
+        this.loadParadas();
+      }
+    }
+  }
+  handleRetrabalhoSubmit(e) {
+    e.preventDefault();
+    const retrabalho = {
+      id: Date.now().toString(),
+      colaborador: document.getElementById('colaboradorRetrabalho').value,
+      horaInicio: document.getElementById('horaInicioRetrabalho').value,
+      horaTermino: document.getElementById('horaTerminoRetrabalho').value,
+      quantidade: parseInt(document.getElementById('quantidadeRetrabalho').value)
+    };
+    this.retrabalhos.push(retrabalho);
+    this.saveRetrabalhos();
+    this.loadRetrabalhos();
+    e.target.reset();
+    alert('Retrabalho registrado com sucesso!');
+  }
+  loadRetrabalhos() {
+    const tbody = document.getElementById('retrabalhoTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    this.retrabalhos.forEach(retrabalho => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+            <td>${retrabalho.colaborador}</td>
+            <td>${new Date(retrabalho.horaInicio).toLocaleString()}</td>
+            <td>${new Date(retrabalho.horaTermino).toLocaleString()}</td>
+            <td>${retrabalho.quantidade}</td>
+            <td>
+              <button class="delete-btn" onclick="productionSystem.deleteRetrabalho('${retrabalho.id}')">
+                Excluir
+              </button>
+            </td>
+          `;
+      tbody.appendChild(row);
+    });
+  }
+  deleteRetrabalho(id) {
+    const password = prompt("Digite a senha para excluir:");
+    if (password === "CartonaleCPL") {
+      const index = this.retrabalhos.findIndex(r => r.id === id);
+      if (index !== -1) {
+        this.retrabalhos.splice(index, 1);
+        this.saveRetrabalhos();
+        this.loadRetrabalhos();
+      }
+    } else {
+      alert("Senha incorreta!");
+    }
+  }
+  saveRetrabalhos() {
+    localStorage.setItem('retrabalhoRecords', JSON.stringify(this.retrabalhos));
+    this.loadRetrabalhos();
+  }
+  updateNextCodeDisplay() {
+    let nextId = 1;
+    if (this.records.length > 0) {
+      const sortedRecords = [...this.records].sort((a, b) => parseInt(a.id) - parseInt(b.id));
+      const lastRecord = sortedRecords[sortedRecords.length - 1];
+      nextId = parseInt(lastRecord.id) + 1;
+    }
+    const formattedId = String(nextId).padStart(7, '0');
+    if (this.codigoProducaoInicio) {
+      this.codigoProducaoInicio.value = formattedId;
+    }
+  }
+  handleSubmit(e) {
+    e.preventDefault();
+    const enteredId = document.getElementById('codigoProducaoInicio').value;
+    if (this.records.some(record => record.id === enteredId)) {
+      alert('Este código de produção já existe!');
+      return;
+    }
+    const especificacao = document.getElementById('especificacaoInicio').value;
+    let finalEspecificaacao = especificacao;
+    const record = {
+      id: enteredId,
+      turno: document.getElementById('turnoProducao').value,
+      colaborador: document.getElementById('colaborador').value,
+      cliente: document.getElementById('cliente').value,
+      of: document.getElementById('of').value,
+      produto: document.getElementById('produto').value,
+      especificacao: finalEspecificaacao,
+      horaInicio: document.getElementById('horaInicio').value,
+      horaTermino: null,
+      quantidade: null,
+      percaSetup: null,
+      pecasDanificadas: null,
+      retrabalho: null,
+      quantidade1Lado: null,
+      quantidade2Lados: null
+    };
+    this.records.push(record);
+    this.saveRecords();
+    this.loadRecords();
+    this.form.reset();
+    this.updateNextCodeDisplay();
+    alert(`Produção iniciada! Código: ${enteredId}`);
+  }
+  loadRecords() {
+    if (!this.tableBody) return;
+    this.tableBody.innerHTML = '';
+    const raiosTableBody = document.getElementById('raiosTableBody');
+    if (raiosTableBody) {
+      raiosTableBody.innerHTML = '';
+    }
+    this.updateNextCodeDisplay();
+    if (this.records.length === 0) {
+      return;
+    }
+    this.records.forEach(record => {
+      if (!record.especificacao || !record.especificacao.includes('Raios')) {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+              <td>${record.id}</td>
+              <td>${this.getTurnoText(record.turno)}</td>
+              <td>${record.colaborador}</td>
+              <td>${record.cliente}</td>
+              <td>${record.of || ''}</td>  
+              <td>${record.produto}</td>
+              <td>${record.especificacao || ''}</td>
+              <td>${new Date(record.horaInicio).toLocaleString()}</td>
+              <td>${record.horaTermino ? new Date(record.horaTermino).toLocaleString() : ''}</td>
+              <td>${record.quantidade || ''}</td>
+              <td>${record.percaSetup || ''}</td>
+              <td>${record.pecasDanificadas || ''}</td>
+              <td>${record.retrabalho || ''}</td>
+              <td class="actions">
+                <button class="delete-btn" onclick="productionSystem.deleteRecord('${record.id}')">
+                  Excluir
+                </button>
+              </td>
+            `;
+        this.tableBody.appendChild(row);
+      } else {
+        if (raiosTableBody) {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+                <td>${record.id}</td>
+                <td>${this.getTurnoText(record.turno)}</td>
+                <td>${record.colaborador}</td>
+                <td>${record.cliente}</td>
+                <td>${record.of || ''}</td>  
+                <td>${record.produto}</td>
+                <td>${record.especificacao}</td>
+                <td>${new Date(record.horaInicio).toLocaleString()}</td>
+                <td>${record.horaTermino ? new Date(record.horaTermino).toLocaleString() : ''}</td>
+                <td>${record.quantidade1Lado || ''}</td>
+                <td>${record.quantidade2Lados || ''}</td>
+                <td>${record.quantidade1Lado + record.quantidade2Lados || ''}</td>
+                <td>${record.percaSetup || ''}</td>
+                <td>${record.pecasDanificadas || ''}</td>
+                <td>${record.retrabalho || ''}</td>
+                <td class="actions">
+                  <button class="delete-btn" onclick="productionSystem.deleteRecord('${record.id}')">
+                    Excluir
+                  </button>
+                </td>
+              `;
+          raiosTableBody.appendChild(row);
+        }
+      }
+    });
+  }
+  saveRecords() {
+    localStorage.setItem('productionRecords', JSON.stringify(this.records));
+  }
+  deleteRecord(id) {
+    const password = prompt("Digite a senha para excluir:");
+    if (password === "CartonaleCPL") {
+      const index = this.records.findIndex(r => r.id === id);
+      if (index !== -1) {
+        this.records.splice(index, 1);
+        this.saveRecords();
+        this.loadRecords();
+      }
+    } else {
+      alert("Senha incorreta!");
+    }
+  }
+  downloadBackup() {
+    const data = {
+      records: this.records,
+      paradas: this.paradas,
+      retrabalhos: this.retrabalhos
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], {
+      type: 'application/json'
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `cartoale-backup-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+  restoreBackup() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = e => {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = readerEvent => {
+        try {
+          const data = JSON.parse(readerEvent.target.result);
+          if (data.records && data.paradas && data.retrabalhos) {
+            this.records = data.records;
+            this.paradas = data.paradas;
+            this.retrabalhos = data.retrabalhos;
+            this.saveRecords();
+            this.saveParadas();
+            this.saveRetrabalhos();
+            this.loadRecords();
+            this.loadParadas();
+            this.loadRetrabalhos();
+            alert('Backup restaurado com sucesso!');
+          } else {
+            throw new Error('Formato de arquivo inválido');
+          }
+        } catch (err) {
+          alert('Erro ao restaurar backup: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+    };
+    input.click();
+  }
+  getTurnoText(turno) {
+    switch (turno) {
+      case '1':
+        return '1º Turno';
+      case '2':
+        return '2º Turno';
+      case '3':
+        return '3º Turno';
+      default:
+        return '';
+    }
+  }
+  calculateEfficiencyStatsForShift(shift) {
+    const shiftRecords = this.records.filter(r => r.turno === shift);
+    const shiftParadas = this.paradas.filter(p => {
+      const hora = new Date(p.horaInicioParada).getHours();
+      if (shift === '1') return hora >= 5 && hora < 14;
+      if (shift === '2') return hora >= 14 && hora < 22;
+      return hora >= 22 || hora < 5;
+    });
+    const totalProduction = shiftRecords.reduce((sum, record) => sum + (parseInt(record.quantidade) || 0), 0);
+    const totalDefects = shiftRecords.reduce((sum, record) => sum + (parseInt(record.pecasDanificadas) || 0) + (parseInt(record.retrabalho) || 0), 0);
+    const productivity = totalProduction > 0 ? 100 : 0;
+    const quality = totalProduction > 0 ? (totalProduction - totalDefects) / totalProduction * 100 : 0;
+    const availability = shiftParadas.length > 0 ? (8 - shiftParadas.length) / 8 * 100 : 100;
+    return {
+      productivity: Math.min(100, productivity),
+      quality: Math.min(100, quality),
+      availability: Math.min(100, availability)
+    };
+  }
+  deleteAllData() {
+    const password = prompt("Digite a senha para excluir todos os dados:");
+    if (password === "CPLCartonale") {
+      const confirmation = confirm("ATENÇÃO: Isso irá excluir TODOS os dados do sistema. Tem certeza?");
+      if (confirmation) {
+        this.records = [];
+        this.paradas = [];
+        this.retrabalhos = [];
+        localStorage.removeItem('productionRecords');
+        localStorage.removeItem('machineStops');
+        localStorage.removeItem('retrabalhoRecords');
+        this.saveRecords();
+        this.saveParadas();
+        this.saveRetrabalhos();
+        this.loadRecords();
+        this.loadParadas();
+        this.loadRetrabalhos();
+        this.updateNextCodeDisplay();
+        alert('Todos os dados foram excluídos com sucesso!');
+      }
+    } else {
+      alert("Senha incorreta!");
     }
   }
 }
-
-document.querySelectorAll('input').forEach(input => {
-  input.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-      generateBarcodes();
+const productionSystem = new ProductionSystem();
+function togglePdfMenu() {
+  document.getElementById('pdfMenu').classList.toggle('show');
+}
+function toggleBackupMenu() {
+  document.getElementById('backupMenu').classList.toggle('show');
+}
+window.onclick = function (event) {
+  if (!event.target.matches('.pdf-button') && !event.target.matches('.pdf-icon') && !event.target.matches('.backup-button') && !event.target.matches('.backup-icon')) {
+    const dropdowns = document.getElementsByClassName('pdf-dropdown');
+    for (let dropdown of dropdowns) {
+      if (dropdown.classList.contains('show')) {
+        dropdown.classList.remove('show');
+      }
+    }
+    const backupDropdowns = document.getElementsByClassName('backup-dropdown');
+    for (let dropdown of backupDropdowns) {
+      if (dropdown.classList.contains('show')) {
+        dropdown.classList.remove('show');
+      }
+    }
+  }
+};
+function generateProductionPDF() {
+  const {
+    jsPDF
+  } = window.jspdf;
+  const doc = new jsPDF('l', 'mm', 'a4');
+  doc.setFontSize(16);
+  doc.text('Relatório de Produção', 15, 15);
+  const recordsByTurno = productionSystem.records.reduce((acc, record) => {
+    if (!acc[record.turno]) {
+      acc[record.turno] = {
+        records: [],
+        totals: {
+          quantidade: 0,
+          percaSetup: 0,
+          pecasDanificadas: 0,
+          retrabalho: 0
+        }
+      };
+    }
+    acc[record.turno].records.push(record);
+    acc[record.turno].totals.quantidade += parseInt(record.quantidade) || 0;
+    acc[record.turno].totals.percaSetup += parseInt(record.percaSetup) || 0;
+    acc[record.turno].totals.pecasDanificadas += parseInt(record.pecasDanificadas) || 0;
+    acc[record.turno].totals.retrabalho += parseInt(record.retrabalho) || 0;
+    return acc;
+  }, {});
+  const summaryData = ['1', '2', '3'].map(turno => {
+    const data = recordsByTurno[turno] || {
+      totals: {
+        quantidade: 0,
+        percaSetup: 0,
+        pecasDanificadas: 0,
+        retrabalho: 0
+      }
+    };
+    return [productionSystem.getTurnoText(turno), data.totals.quantidade, data.totals.percaSetup, data.totals.pecasDanificadas, data.totals.retrabalho];
+  });
+  doc.autoTable({
+    startY: 20,
+    head: [['Turno', 'Total Produção', 'Total Setup', 'Total Danificadas', 'Total Retrabalho']],
+    body: summaryData,
+    theme: 'grid',
+    headStyles: {
+      fillColor: [26, 35, 126]
+    },
+    margin: {
+      left: 15
     }
   });
-});
-</script>
+  let yOffset = doc.autoTable.previous.finalY + 10;
+  ['1', '2', '3'].forEach(turno => {
+    const data = recordsByTurno[turno] || {
+      records: []
+    };
+    doc.setFontSize(14);
+    doc.text(`${productionSystem.getTurnoText(turno)}`, 15, yOffset);
+    const tableData = data.records.map(r => [r.id, r.colaborador, r.cliente, r.of, r.produto, r.especificacao || '', r.horaInicio ? new Date(r.horaInicio).toLocaleString() : '', r.horaTermino ? new Date(r.horaTermino).toLocaleString() : '', r.quantidade || '', r.percaSetup || '', r.pecasDanificadas || '', r.retrabalho || '']);
+    doc.autoTable({
+      startY: yOffset + 5,
+      head: [['Código', 'Colaborador', 'Cliente', 'OF', 'Produto', 'Especificações', 'Início', 'Término', 'Qtd', 'Setup', 'Danif.', 'Retrab.']],
+      body: tableData,
+      theme: 'grid',
+      headStyles: {
+        fillColor: [26, 35, 126]
+      },
+      margin: {
+        left: 15
+      }
+    });
+    yOffset = doc.autoTable.previous.finalY + 15;
+    if (yOffset > 180 && turno !== '3') {
+      doc.addPage();
+      yOffset = 15;
+    }
+  });
+  doc.save('relatorio-producao.pdf');
+}
+function generateReworkPDF() {
+  const {
+    jsPDF
+  } = window.jspdf;
+  const doc = new jsPDF('l', 'mm', 'a4');
+  doc.setFontSize(16);
+  doc.text('Relatório de Retrabalho', 15, 15);
+  const retrabalhosByTurno = productionSystem.retrabalhos.reduce((acc, ret) => {
+    const hora = new Date(ret.horaInicio).getHours();
+    let turno;
+    if (hora >= 5 && hora < 14) turno = '1';else if (hora >= 14 && hora < 22) turno = '2';else turno = '3';
+    if (!acc[turno]) {
+      acc[turno] = {
+        retrabalhos: [],
+        total: 0,
+        count: 0
+      };
+    }
+    acc[turno].retrabalhos.push(ret);
+    acc[turno].total += parseInt(ret.quantidade) || 0;
+    acc[turno].count++;
+    return acc;
+  }, {});
+  const summaryData = ['1', '2', '3'].map(turno => {
+    const data = retrabalhosByTurno[turno] || {
+      total: 0,
+      count: 0
+    };
+    return [productionSystem.getTurnoText(turno), data.count, data.total, data.count > 0 ? (data.total / data.count).toFixed(2) + '%' : '0.00'];
+  });
+  doc.autoTable({
+    startY: 20,
+    head: [['Turno', 'Quantidade de Retrabalhos', 'Total de Peças', 'Média por Retrabalho']],
+    body: summaryData,
+    theme: 'grid',
+    headStyles: {
+      fillColor: [26, 35, 126]
+    },
+    margin: {
+      left: 15
+    }
+  });
+  let yOffset = doc.autoTable.previous.finalY + 10;
+  ['1', '2', '3'].forEach(turno => {
+    const data = retrabalhosByTurno[turno] || {
+      retrabalhos: []
+    };
+    doc.setFontSize(14);
+    doc.text(`${productionSystem.getTurnoText(turno)}`, 15, yOffset);
+    const tableData = data.retrabalhos.map(p => [p.colaborador, new Date(p.horaInicio).toLocaleString(), new Date(p.horaTermino).toLocaleString(), p.quantidade]);
+    doc.autoTable({
+      startY: yOffset + 5,
+      head: [['Colaborador', 'Início', 'Término', 'Quantidade']],
+      body: tableData,
+      theme: 'grid',
+      headStyles: {
+        fillColor: [26, 35, 126]
+      },
+      margin: {
+        left: 15
+      }
+    });
+    yOffset = doc.autoTable.previous.finalY + 15;
+    if (yOffset > 180 && turno !== '3') {
+      doc.addPage();
+      yOffset = 15;
+    }
+  });
+  doc.save('relatorio-retrabalho.pdf');
+}
+function generateStopsPDF() {
+  const {
+    jsPDF
+  } = window.jspdf;
+  const doc = new jsPDF('l', 'mm', 'a4');
+  doc.setFontSize(16);
+  doc.text('Relatório de Paradas', 15, 15);
+  const paradasByTurno = productionSystem.paradas.reduce((acc, parada) => {
+    const hora = new Date(parada.horaInicioParada).getHours();
+    let turno;
+    if (hora >= 5 && hora < 14) turno = '1';else if (hora >= 14 && hora < 22) turno = '2';else turno = '3';
+    if (!acc[turno]) {
+      acc[turno] = {
+        paradas: [],
+        count: 0,
+        byType: {}
+      };
+    }
+    acc[turno].paradas.push(parada);
+    acc[turno].count++;
+    acc[turno].byType[parada.tipo] = (acc[turno].byType[parada.tipo] || 0) + 1;
+    return acc;
+  }, {});
+  const summaryData = ['1', '2', '3'].map(turno => {
+    const data = paradasByTurno[turno] || {
+      count: 0,
+      byType: {}
+    };
+    return [productionSystem.getTurnoText(turno), data.count, Object.values(data.byType).reduce((sum, val) => sum + val, 0)];
+  });
+  doc.autoTable({
+    startY: 20,
+    head: [['Turno', 'Total Paradas', 'Total por Tipo']],
+    body: summaryData,
+    theme: 'grid',
+    headStyles: {
+      fillColor: [26, 35, 126]
+    },
+    margin: {
+      left: 15
+    }
+  });
+  let yOffset = doc.autoTable.previous.finalY + 10;
+  ['1', '2', '3'].forEach(turno => {
+    const data = paradasByTurno[turno] || {
+      paradas: []
+    };
+    doc.setFontSize(14);
+    doc.text(`${productionSystem.getTurnoText(turno)}`, 15, yOffset);
+    const tableData = data.paradas.map(p => [p.maquina, p.tipo, p.descricao, new Date(p.horaInicioParada).toLocaleString(), p.horaTermino ? new Date(p.horaTermino).toLocaleString() : '']);
+    doc.autoTable({
+      startY: yOffset + 5,
+      head: [['Máquina', 'Tipo', 'Descrição', 'Início', 'Término']],
+      body: tableData,
+      theme: 'grid',
+      headStyles: {
+        fillColor: [26, 35, 126]
+      },
+      margin: {
+        left: 15
+      }
+    });
+    yOffset = doc.autoTable.previous.finalY + 15;
+    if (yOffset > 180 && turno !== '3') {
+      doc.addPage();
+      yOffset = 15;
+    }
+  });
+  doc.save('relatorio-paradas.pdf');
+}
+function generateDashboardChartsPDF() {
+  const {
+    jsPDF
+  } = window.jspdf;
+  const doc = new jsPDF('l', 'mm', 'a4');
+  doc.setFontSize(16);
+  doc.text('Relatório OEE', 15, 15);
+  const productionStats = productionSystem.calculateProductionStats();
+  const stopsStats = productionSystem.calculateStopsStats();
+  const reworkStats = productionSystem.calculateReworkStats();
+  const targetProduction = 3000;
+  const productionData = [['Métrica', '1º Turno', '2º Turno', '3º Turno'], ['Produção Total', productionStats['1'].production, productionStats['2'].production, productionStats['3'].production], ['Meta de Produção', targetProduction, targetProduction, targetProduction], ['Atingimento (%)', (productionStats['1'].production / targetProduction * 100).toFixed(1) + '%', (productionStats['2'].production / targetProduction * 100).toFixed(1) + '%', (productionStats['3'].production / targetProduction * 100).toFixed(1) + '%'], ['Perdas Setup', productionStats['1'].setup, productionStats['2'].setup, productionStats['3'].setup], ['Peças Danificadas', productionStats['1'].damaged, productionStats['2'].damaged, productionStats['3'].damaged], ['Retrabalho', productionStats['1'].rework, productionStats['2'].rework, productionStats['3'].rework], ['Total de Perdas', productionStats['1'].setup + productionStats['1'].damaged + productionStats['1'].rework, productionStats['2'].setup + productionStats['2'].damaged + productionStats['2'].rework, productionStats['3'].setup + productionStats['3'].damaged + productionStats['3'].rework], ['Taxa de Perdas (%)', ((productionStats['1'].setup + productionStats['1'].damaged + productionStats['1'].rework) / (productionStats['1'].production || 1) * 100).toFixed(1) + '%', ((productionStats['2'].setup + productionStats['2'].damaged + productionStats['2'].rework) / (productionStats['2'].production || 1) * 100).toFixed(1) + '%', ((productionStats['3'].setup + productionStats['3'].damaged + productionStats['3'].rework) / (productionStats['3'].production || 1) * 100).toFixed(1) + '%']];
+  doc.autoTable({
+    startY: 25,
+    head: [productionData[0]],
+    body: productionData.slice(1),
+    theme: 'grid',
+    headStyles: {
+      fillColor: [26, 35, 126]
+    },
+    styles: {
+      fontSize: 10
+    }
+  });
+  let yPos = doc.autoTable.previous.finalY + 15;
+  doc.setFontSize(14);
+  doc.text('Métricas de Eficiência por Turno', 15, yPos);
+  const efficiencyData = [['Métrica', '1º Turno', '2º Turno', '3º Turno'], ['Produtividade (%)', (productionStats['1'].production / targetProduction * 100).toFixed(1) + '%', (productionStats['2'].production / targetProduction * 100).toFixed(1) + '%', (productionStats['3'].production / targetProduction * 100).toFixed(1) + '%'], ['Qualidade (%)', ((productionStats['1'].production - productionStats['1'].damaged - productionStats['1'].rework) / productionStats['1'].production * 100 || 0).toFixed(1) + '%', ((productionStats['2'].production - productionStats['2'].damaged - productionStats['2'].rework) / productionStats['2'].production * 100 || 0).toFixed(1) + '%', ((productionStats['3'].production - productionStats['3'].damaged - productionStats['3'].rework) / productionStats['3'].production * 100 || 0).toFixed(1) + '%'], ['Disponibilidade (%)', ((8 - productionStats['1'].setup / targetProduction * 8) / 8 * 100).toFixed(1) + '%', ((8 - productionStats['2'].setup / targetProduction * 8) / 8 * 100).toFixed(1) + '%', ((8 - productionStats['3'].setup / targetProduction * 8) / 8 * 100).toFixed(1) + '%'], ['OEE (%)', (productionStats['1'].production / targetProduction * ((productionStats['1'].production - productionStats['1'].damaged - productionStats['1'].rework) / productionStats['1'].production) * ((8 - productionStats['1'].setup / targetProduction * 8) / 8) * 100 || 0).toFixed(1) + '%', (productionStats['2'].production / targetProduction * ((productionStats['2'].production - productionStats['2'].damaged - productionStats['2'].rework) / productionStats['2'].production) * ((8 - productionStats['2'].setup / targetProduction * 8) / 8) * 100 || 0).toFixed(1) + '%', (productionStats['3'].production / targetProduction * ((productionStats['3'].production - productionStats['3'].damaged - productionStats['3'].rework) / productionStats['3'].production) * ((8 - productionStats['3'].setup / targetProduction * 8) / 8) * 100 || 0).toFixed(1) + '%']];
+  doc.autoTable({
+    startY: yPos + 5,
+    head: [efficiencyData[0]],
+    body: efficiencyData.slice(1),
+    theme: 'grid',
+    headStyles: {
+      fillColor: [26, 35, 126]
+    },
+    styles: {
+      fontSize: 10
+    }
+  });
+  yPos = doc.autoTable.previous.finalY + 15;
+  doc.setFontSize(14);
+  doc.text('Resumo de Paradas de Máquina', 15, yPos);
+  const stopsData = [['Tipo de Parada', 'Quantidade', 'Impacto na Disponibilidade (%)'], ['Manutenção', stopsStats.manutencao, (stopsStats.manutencao * 30 / (8 * 60) * 100).toFixed(1) + '%'], ['Setup', stopsStats.setup, (stopsStats.setup * 30 / (8 * 60) * 100).toFixed(1) + '%'], ['Quebra', stopsStats.quebra, (stopsStats.quebra * 30 / (8 * 60) * 100).toFixed(1) + '%'], ['Ajuste', stopsStats.ajuste, (stopsStats.ajuste * 30 / (8 * 60) * 100).toFixed(1) + '%'], ['Outro', stopsStats.outro, (stopsStats.outro * 30 / (8 * 60) * 100).toFixed(1) + '%']];
+  doc.autoTable({
+    startY: yPos + 5,
+    head: [stopsData[0]],
+    body: stopsData.slice(1),
+    theme: 'grid',
+    headStyles: {
+      fillColor: [26, 35, 126]
+    },
+    styles: {
+      fontSize: 10
+    }
+  });
+  doc.addPage();
+  doc.setFontSize(16);
+  doc.text('Relatório OEE - Raios', 15, 15);
+  const raysRecords = productionSystem.records.filter(record => record.especificacao && record.especificacao.includes('Raios'));
+  const raysStats = raysRecords.reduce((acc, record) => {
+    if (!acc[record.turno]) {
+      acc[record.turno] = {
+        quantidade1Lado: 0,
+        quantidade2Lados: 0,
+        setup: 0,
+        damaged: 0,
+        rework: 0
+      };
+    }
+    acc[record.turno].quantidade1Lado += parseInt(record.quantidade1Lado) || 0;
+    acc[record.turno].quantidade2Lados += parseInt(record.quantidade2Lados) || 0;
+    acc[record.turno].setup += parseInt(record.percaSetup) || 0;
+    acc[record.turno].damaged += parseInt(record.pecasDanificadas) || 0;
+    acc[record.turno].rework += parseInt(record.retrabalho) || 0;
+    return acc;
+  }, {});
+  const raysProductionData = [['Métrica', '1º Turno', '2º Turno', '3º Turno'], ['Produção 1 Lado', raysStats['1']?.quantidade1Lado || 0, raysStats['2']?.quantidade1Lado || 0, raysStats['3']?.quantidade1Lado || 0], ['Produção 2 Lados', raysStats['1']?.quantidade2Lados || 0, raysStats['2']?.quantidade2Lados || 0, raysStats['3']?.quantidade2Lados || 0], ['Produção Total', (raysStats['1']?.quantidade1Lado || 0) + (raysStats['1']?.quantidade2Lados || 0), (raysStats['2']?.quantidade1Lado || 0) + (raysStats['2']?.quantidade2Lados || 0), (raysStats['3']?.quantidade1Lado || 0) + (raysStats['3']?.quantidade2Lados || 0)], ['Meta de Produção', targetProduction, targetProduction, targetProduction], ['Atingimento (%)', (((raysStats['1']?.quantidade1Lado || 0) + (raysStats['1']?.quantidade2Lados || 0)) / targetProduction * 100).toFixed(1) + '%', (((raysStats['2']?.quantidade1Lado || 0) + (raysStats['2']?.quantidade2Lados || 0)) / targetProduction * 100).toFixed(1) + '%', (((raysStats['3']?.quantidade1Lado || 0) + (raysStats['3']?.quantidade2Lados || 0)) / targetProduction * 100).toFixed(1) + '%'], ['Perdas Setup', raysStats['1']?.setup || 0, raysStats['2']?.setup || 0, raysStats['3']?.setup || 0], ['Peças Danificadas', raysStats['1']?.damaged || 0, raysStats['2']?.damaged || 0, raysStats['3']?.damaged || 0], ['Retrabalho', raysStats['1']?.rework || 0, raysStats['2']?.rework || 0, raysStats['3']?.rework || 0], ['Total de Perdas', (raysStats['1']?.setup || 0) + (raysStats['1']?.damaged || 0) + (raysStats['1']?.rework || 0), (raysStats['2']?.setup || 0) + (raysStats['2']?.damaged || 0) + (raysStats['2']?.rework || 0), (raysStats['3']?.setup || 0) + (raysStats['3']?.damaged || 0) + (raysStats['3']?.rework || 0)], ['Taxa de Perdas (%)', (((raysStats['1']?.setup || 0) + (raysStats['1']?.damaged || 0) + (raysStats['1']?.rework || 0)) / ((raysStats['1']?.quantidade1Lado || 0) + (raysStats['1']?.quantidade2Lados || 1)) * 100).toFixed(1) + '%', (((raysStats['2']?.setup || 0) + (raysStats['2']?.damaged || 0) + (raysStats['2']?.rework || 0)) / ((raysStats['2']?.quantidade1Lado || 0) + (raysStats['2']?.quantidade2Lados || 1)) * 100).toFixed(1) + '%', (((raysStats['3']?.setup || 0) + (raysStats['3']?.damaged || 0) + (raysStats['3']?.rework || 0)) / ((raysStats['3']?.quantidade1Lado || 0) + (raysStats['3']?.quantidade2Lados || 1)) * 100).toFixed(1) + '%']];
+  doc.autoTable({
+    startY: 25,
+    head: [raysProductionData[0]],
+    body: raysProductionData.slice(1),
+    theme: 'grid',
+    headStyles: {
+      fillColor: [26, 35, 126]
+    },
+    styles: {
+      fontSize: 10
+    }
+  });
+  doc.save('Relatório-OEE.pdf');
+}
+function generateRaysProductionPDF() {
+  const {
+    jsPDF
+  } = window.jspdf;
+  const doc = new jsPDF('l', 'mm', 'a4');
+  doc.setFontSize(16);
+  doc.text('Relatório de Produção - Raios', 15, 15);
+  const raysRecords = productionSystem.records.filter(record => record.especificacao && record.especificacao.includes('Raios'));
+  const recordsByTurno = raysRecords.reduce((acc, record) => {
+    if (!acc[record.turno]) {
+      acc[record.turno] = {
+        records: [],
+        totals: {
+          quantidade1Lado: 0,
+          quantidade2Lados: 0,
+          total: 0,
+          percaSetup: 0,
+          pecasDanificadas: 0,
+          retrabalho: 0
+        }
+      };
+    }
+    acc[record.turno].records.push(record);
+    acc[record.turno].totals.quantidade1Lado += parseInt(record.quantidade1Lado) || 0;
+    acc[record.turno].totals.quantidade2Lados += parseInt(record.quantidade2Lados) || 0;
+    acc[record.turno].totals.total += (parseInt(record.quantidade1Lado) || 0) + (parseInt(record.quantidade2Lados) || 0);
+    acc[record.turno].totals.percaSetup += parseInt(record.percaSetup) || 0;
+    acc[record.turno].totals.pecasDanificadas += parseInt(record.pecasDanificadas) || 0;
+    acc[record.turno].totals.retrabalho += parseInt(record.retrabalho) || 0;
+    return acc;
+  }, {});
+  const summaryData = ['1', '2', '3'].map(turno => {
+    const data = recordsByTurno[turno] || {
+      totals: {
+        quantidade1Lado: 0,
+        quantidade2Lados: 0,
+        total: 0,
+        percaSetup: 0,
+        pecasDanificadas: 0,
+        retrabalho: 0
+      }
+    };
+    return [productionSystem.getTurnoText(turno), data.totals.quantidade1Lado, data.totals.quantidade2Lados, data.totals.total, data.totals.percaSetup, data.totals.pecasDanificadas, data.totals.retrabalho];
+  });
+  doc.autoTable({
+    startY: 20,
+    head: [['Turno', 'Qtd 1 Lado', 'Qtd 2 Lados', 'Total', 'Setup', 'Danificadas', 'Retrabalho']],
+    body: summaryData,
+    theme: 'grid',
+    headStyles: {
+      fillColor: [26, 35, 126]
+    },
+    margin: {
+      left: 15
+    }
+  });
+  let yOffset = doc.autoTable.previous.finalY + 10;
+  ['1', '2', '3'].forEach(turno => {
+    const data = recordsByTurno[turno] || {
+      records: []
+    };
+    doc.setFontSize(14);
+    doc.text(`${productionSystem.getTurnoText(turno)}`, 15, yOffset);
+    const tableData = data.records.map(r => [r.id, r.colaborador, r.cliente, r.of, r.produto, r.horaInicio ? new Date(r.horaInicio).toLocaleString() : '', r.horaTermino ? new Date(r.horaTermino).toLocaleString() : '', r.quantidade1Lado || '', r.quantidade2Lados || '', (parseInt(r.quantidade1Lado) || 0) + (parseInt(r.quantidade2Lados) || 0), r.percaSetup || '', r.pecasDanificadas || '', r.retrabalho || '']);
+    doc.autoTable({
+      startY: yOffset + 5,
+      head: [['Código', 'Colaborador', 'Cliente', 'OF', 'Produto', 'Início', 'Término', 'Qtd 1 Lado', 'Qtd 2 Lados', 'Total', 'Setup', 'Danif.', 'Retrab.']],
+      body: tableData,
+      theme: 'grid',
+      headStyles: {
+        fillColor: [26, 35, 126]
+      },
+      margin: {
+        left: 15
+      }
+    });
+    yOffset = doc.autoTable.previous.finalY + 15;
+    if (yOffset > 180 && turno !== '3') {
+      doc.addPage();
+      yOffset = 15;
+    }
+  });
+  doc.save('relatorio-producao-raios.pdf');
+}
+function generateOEERaiosPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF('l', 'mm', 'a4');
+  doc.setFontSize(16);
+  doc.text('Relatório OEE - Raios', 15, 15);
+
+  const raysRecords = productionSystem.records.filter(record => 
+    record.especificacao && record.especificacao.includes('Raios')
+  );
+
+  const targetProduction = 500; 
+
+  const raysStats = raysRecords.reduce((acc, record) => {
+    if (!acc[record.turno]) {
+      acc[record.turno] = {
+        quantidade1Lado: 0,
+        quantidade2Lados: 0,
+        setup: 0,
+        damaged: 0,
+        rework: 0
+      };
+    }
+    acc[record.turno].quantidade1Lado += parseInt(record.quantidade1Lado) || 0;
+    acc[record.turno].quantidade2Lados += parseInt(record.quantidade2Lados) || 0;
+    acc[record.turno].setup += parseInt(record.percaSetup) || 0;
+    acc[record.turno].damaged += parseInt(record.pecasDanificadas) || 0;
+    acc[record.turno].rework += parseInt(record.retrabalho) || 0;
+    return acc;
+  }, {});
+
+  const productionData = [
+    ['Métrica', '1º Turno', '2º Turno', '3º Turno'],
+    
+      ['Produção Total', raysStats['1']?.quantidade2Lados || 0, raysStats['2']?.quantidade2Lados || 0, raysStats['3']?.quantidade2Lados || 0],
+    ['Meta de Produção', targetProduction, targetProduction, targetProduction],
+    ['Atingimento (%)', 
+      ((raysStats['1']?.quantidade2Lados || 0) / targetProduction * 100).toFixed(1) + '%',
+      ((raysStats['2']?.quantidade2Lados || 0) / targetProduction * 100).toFixed(1) + '%',
+      ((raysStats['3']?.quantidade2Lados || 0) / targetProduction * 100).toFixed(1) + '%'
+    ],
+    ['Perdas Setup', raysStats['1']?.setup || 0, raysStats['2']?.setup || 0, raysStats['3']?.setup || 0],
+    ['Peças Danificadas', raysStats['1']?.damaged || 0, raysStats['2']?.damaged || 0, raysStats['3']?.damaged || 0],
+    ['Retrabalho', raysStats['1']?.rework || 0, raysStats['2']?.rework || 0, raysStats['3']?.rework || 0],
+    ['Total de Perdas',
+      (raysStats['1']?.setup || 0) + (raysStats['1']?.damaged || 0) + (raysStats['1']?.rework || 0),
+      (raysStats['2']?.setup || 0) + (raysStats['2']?.damaged || 0) + (raysStats['2']?.rework || 0),
+      (raysStats['3']?.setup || 0) + (raysStats['3']?.damaged || 0) + (raysStats['3']?.rework || 0)
+    ],
+    ['Taxa de Perdas (%)',
+      (((raysStats['1']?.setup || 0) + (raysStats['1']?.damaged || 0) + (raysStats['1']?.rework || 0)) / (raysStats['1']?.quantidade2Lados || 1) * 100).toFixed(1) + '%',
+      (((raysStats['2']?.setup || 0) + (raysStats['2']?.damaged || 0) + (raysStats['2']?.rework || 0)) / (raysStats['2']?.quantidade2Lados || 1) * 100).toFixed(1) + '%',
+      (((raysStats['3']?.setup || 0) + (raysStats['3']?.damaged || 0) + (raysStats['3']?.rework || 0)) / (raysStats['3']?.quantidade2Lados || 1) * 100).toFixed(1) + '%'
+    ]
+  ];
+
+  doc.autoTable({
+    startY: 25,
+    head: [productionData[0]],
+    body: productionData.slice(1),
+    theme: 'grid',
+    headStyles: { fillColor: [26, 35, 126] },
+    styles: { fontSize: 10 }
+  });
+
+  let yPos = doc.autoTable.previous.finalY + 15;
+  doc.setFontSize(14);
+  doc.text('Métricas de Eficiência por Turno', 15, yPos);
+
+  const efficiencyData = [
+    ['Métrica', '1º Turno', '2º Turno', '3º Turno'],
+    ['Produtividade (%)',
+      ((raysStats['1']?.quantidade2Lados || 0) / targetProduction * 100).toFixed(1) + '%',
+      ((raysStats['2']?.quantidade2Lados || 0) / targetProduction * 100).toFixed(1) + '%',
+      ((raysStats['3']?.quantidade2Lados || 0) / targetProduction * 100).toFixed(1) + '%'
+    ],
+    ['Qualidade (%)',
+      ((raysStats['1']?.quantidade2Lados || 0 - (raysStats['1']?.damaged || 0) - (raysStats['1']?.rework || 0)) / (raysStats['1']?.quantidade2Lados || 1) * 100).toFixed(1) + '%',
+      ((raysStats['2']?.quantidade2Lados || 0 - (raysStats['2']?.damaged || 0) - (raysStats['2']?.rework || 0)) / (raysStats['2']?.quantidade2Lados || 1) * 100).toFixed(1) + '%',
+      ((raysStats['3']?.quantidade2Lados || 0 - (raysStats['3']?.damaged || 0) - (raysStats['3']?.rework || 0)) / (raysStats['3']?.quantidade2Lados || 1) * 100).toFixed(1) + '%'
+    ],
+    ['Disponibilidade (%)',
+      ((8 - (raysStats['1']?.setup || 0) / targetProduction * 8) / 8 * 100).toFixed(1) + '%',
+      ((8 - (raysStats['2']?.setup || 0) / targetProduction * 8) / 8 * 100).toFixed(1) + '%',
+      ((8 - (raysStats['3']?.setup || 0) / targetProduction * 8) / 8 * 100).toFixed(1) + '%'
+    ],
+    ['OEE (%)',
+      ((raysStats['1']?.quantidade2Lados || 0) / targetProduction * 
+       ((raysStats['1']?.quantidade2Lados || 0 - (raysStats['1']?.damaged || 0) - (raysStats['1']?.rework || 0)) / (raysStats['1']?.quantidade2Lados || 1)) * 
+       ((8 - (raysStats['1']?.setup || 0) / targetProduction * 8) / 8) * 100).toFixed(1) + '%',
+      ((raysStats['2']?.quantidade2Lados || 0) / targetProduction * 
+       ((raysStats['2']?.quantidade2Lados || 0 - (raysStats['2']?.damaged || 0) - (raysStats['2']?.rework || 0)) / (raysStats['2']?.quantidade2Lados || 1)) * 
+       ((8 - (raysStats['2']?.setup || 0) / targetProduction * 8) / 8) * 100).toFixed(1) + '%',
+      ((raysStats['3']?.quantidade2Lados || 0) / targetProduction * 
+       ((raysStats['3']?.quantidade2Lados || 0 - (raysStats['3']?.damaged || 0) - (raysStats['3']?.rework || 0)) / (raysStats['3']?.quantidade2Lados || 1)) * 
+       ((8 - (raysStats['3']?.setup || 0) / targetProduction * 8) / 8) * 100).toFixed(1) + '%'
+    ]
+  ];
+
+  doc.autoTable({
+    startY: yPos + 5,
+    head: [efficiencyData[0]],
+    body: efficiencyData.slice(1),
+    theme: 'grid',
+    headStyles: { fillColor: [26, 35, 126] },
+    styles: { fontSize: 10 }
+  });
+
+  doc.save('Relatório-OEE-Raios.pdf');
+}</script>
 </body>
 </html>
